@@ -1003,6 +1003,9 @@ class gas_thermo(om.ExplicitComponent):
 
 if __name__ == "__main__":
 
+    igas = 2
+    T = 2201.0
+
     prob = om.Problem()
     prob.model.add_subsystem('gas', gas_thermo(igas),
                             promotes_inputs=['T'])
@@ -1011,3 +1014,6 @@ if __name__ == "__main__":
     prob.set_val('T', T)
     fail = prob.run_driver()
     prob.model.list_outputs(val=True, units=True)
+
+    totals = prob.compute_totals(['gas.s', 'gas.s_t', 'gas.h', 'gas.h_t', 'gas.cp', 'gas.r'], ['T'])
+    print(totals)
